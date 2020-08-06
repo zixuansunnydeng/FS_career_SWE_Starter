@@ -6,7 +6,6 @@ class DetailsView extends StatelessWidget {
   final Restaurant res;
 
   DetailsView({@required this.res});
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -17,7 +16,7 @@ class DetailsView extends StatelessWidget {
       body: ListView(
         children: <Widget>[
           // TODO: add height and fit to make this image look better
-          Image.network(res.resImage),
+          Image.network(res.resImage, height: 200, fit: BoxFit.cover),
           Padding(
             padding: const EdgeInsets.fromLTRB(8, 8, 8, 4),
             child: Row(
@@ -56,8 +55,6 @@ class DetailsView extends StatelessWidget {
                 SizedBox(width: 2),
                 Text('${res.rating}'),
                 SizedBox(width: 2),
-                // TODO: (bonus) look into rating bar indicator to make it dynamic
-                // https://pub.dev/packages/flutter_rating_bar
                 Icon(Icons.star, size: 20),
                 Icon(Icons.star, size: 20),
                 Icon(Icons.star, size: 20),
@@ -68,8 +65,6 @@ class DetailsView extends StatelessWidget {
           ),
           Padding(
             padding: const EdgeInsets.fromLTRB(8, 0, 0, 8),
-            // TODO: parse the address from yelp data and save to database
-            // and then to display it
             child: Text('90 Eglinton East, Toronto, ABC EFG'),
           ),
           Divider(height: 1),
@@ -112,9 +107,7 @@ class DetailsView extends StatelessWidget {
                   alignment: Alignment.center,
                   children: [
                     FlatButton(
-                      child: Image.network(res.resImage),
-                      onPressed: () {},
-                    ),
+                        child: Image.network(res.resImage), onPressed: () {}),
                     Text(
                       'Teriyaki',
                       style: TextStyle(
@@ -130,8 +123,9 @@ class DetailsView extends StatelessWidget {
             child: RaisedButton(
               onPressed: () {},
               child:
-                  Text('Book the table', style: TextStyle(color: Colors.white)),
-              // TODO: Add rounded border to the button
+                  Text('Boot the table', style: TextStyle(color: Colors.white)),
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20)),
               color: Colors.red,
             ),
           )
