@@ -7,6 +7,7 @@ import 'package:lecture_3/core/model/restaurant.dart';
 import 'package:lecture_3/ui/views/subviews/res_card.dart';
 
 class HomeView extends StatefulWidget {
+  final String useremail;
   static List<String> categories = ['American', 'French', 'Dessert', 'Bar'];
   static List<String> categoryImgs = [
     'Burger.png',
@@ -15,7 +16,7 @@ class HomeView extends StatefulWidget {
     'Cocktails.png'
   ];
   static List<Restaurant> resList = [];
-
+  HomeView({@required this.useremail});
   @override
   _HomeViewState createState() => _HomeViewState();
 }
@@ -32,7 +33,7 @@ class _HomeViewState extends State<HomeView> {
 
   Future<void> loadRestaurant() async {
     // Use your own server api, make a GET request on /getRes
-    var endpoint = 'http://100.26.133.254/getRes';
+    var endpoint = 'http://52.205.82.172/getRes';
     Response response = await get(endpoint);
     for (var jsonRes in json.decode(response.body)) {
       var res = Restaurant(
@@ -41,7 +42,8 @@ class _HomeViewState extends State<HomeView> {
           jsonRes['category1'],
           jsonRes['category2'],
           jsonRes['rating'],
-          jsonRes['image_url']);
+          jsonRes['image_url'],
+          jsonRes['address']);
       HomeView.resList.add(res);
     }
   }
@@ -119,7 +121,7 @@ class _HomeViewState extends State<HomeView> {
                     scrollDirection: Axis.horizontal,
                     itemCount: HomeView.resList.length,
                     itemBuilder: (BuildContext context, int index) {
-                      return ResCard(res: HomeView.resList[index]);
+                      return ResCard(res: HomeView.resList[index], useremail: widget.useremail);
                     }),
               )
             ],

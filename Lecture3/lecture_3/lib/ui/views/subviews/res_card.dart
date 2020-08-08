@@ -3,16 +3,22 @@ import 'package:lecture_3/core/model/restaurant.dart';
 import 'package:lecture_3/ui/views/details_view.dart';
 
 class ResCard extends StatelessWidget {
+  final String useremail;
   final Restaurant res;
-  ResCard({@required this.res});
+  ResCard({@required this.res, @required this.useremail});
   @override
   Widget build(BuildContext context) {
     return Container(
       width: 250,
       child: FlatButton(
         onPressed: () {
-          Navigator.push(context,
-              MaterialPageRoute(builder: (context) => DetailsView(res: res)));
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => DetailsView(
+                        res: res,
+                        useremail: useremail,
+                      )));
         },
         padding: EdgeInsets.all(0),
         child: Card(

@@ -5,7 +5,7 @@ class Restaurant(Model): # inheritance
     class Meta:
         table_name = "Restaurant"
         region = 'us-east-1'
-    bute(hash_key=True)
+    resName = UnicodeAttribute(hash_key=True)
     city = UnicodeAttribute()
     category1 = UnicodeAttribute()
     category2 = UnicodeAttribute()
