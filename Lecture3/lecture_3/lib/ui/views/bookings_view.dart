@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
+import 'package:provider/provider.dart';
 
 class BookingsView extends StatefulWidget {
   final void Function(String) setupUserEmail;
@@ -17,7 +18,7 @@ class _BookingsViewState extends State<BookingsView> {
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
 
-  Future<String> login(email, password) async {
+  Future<Map<String, dynamic>> login(email, password) async {
     var param = {
       'email': email,
       'password': password,
@@ -36,7 +37,7 @@ class _BookingsViewState extends State<BookingsView> {
             backgroundColor: Colors.red,
             title: Text('Bookings', style: TextStyle(color: Colors.white))),
         body: loggedin
-            ? Container(child: Text('Already Logged In'))
+            ? BookingsColumn()
             : Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Column(
@@ -58,10 +59,16 @@ class _BookingsViewState extends State<BookingsView> {
                     RaisedButton(
                       onPressed: () async {
                         // call login api
-                        var output = await login(
+                        var response = await login(
                             emailController.text, passwordController.text);
+                        print(response);
+                        var output = response['status'];
                         if (output == 'Success') {
                           // do something
+                          for (var resName in response['user_reservations']) {
+                            Provider.of<List<String>>(context, listen: false)
+                                .add(resName);
+                          }
                           widget.setupUserEmail(emailController.text);
                           setState(() {
                             loggedin = true;
@@ -97,5 +104,20 @@ class _BookingsViewState extends State<BookingsView> {
                   ],
                 ),
               ));
+  }
+}
+
+class BookingsColumn extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    var bookings = Provider.of<List<String>>(context, listen: false);
+    return ListView.builder(
+      itemCount: bookings.length,
+      itemBuilder: (BuildContext context, int index) {
+        return ListTile(
+          title: Text(bookings[index]),
+        );
+      },
+    );
   }
 }

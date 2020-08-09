@@ -32,7 +32,7 @@ class User(Model): # inheritance
 - HTTP POST: another type of http request, should modifies the server database
 
 ```dart
-@app.route("/login", methods=["GET"])
+@app.route("/login", methods=["POST"])
 def login():
     email = request.json["email"]
     password = request.json["password"]
@@ -60,5 +60,9 @@ def login():
 ```dart
 @app.route("/book", methods=["POST"])
 def book():
+// pass in useremail, resName
+// add this resName to user's reservation
 ```
-2. Update book the table button, so that it alerts successful when the reservation goes through
+2. Update book the table button, so that
+- it alerts an error if user hasn't logged in
+- alert success when booking is successful
