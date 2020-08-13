@@ -9,13 +9,6 @@ class BottomNavigationView extends StatefulWidget {
 
 class _BottomNavigationViewState extends State<BottomNavigationView> {
   int _selectedIndex = 1;
-  String useremail;
-
-  void setUserEmail(email) {
-    setState(() {
-      useremail = email;
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -23,10 +16,8 @@ class _BottomNavigationViewState extends State<BottomNavigationView> {
       body: IndexedStack(
         index: _selectedIndex,
         children: [
-          HomeView(useremail: useremail),
-          BookingsView(
-            setupUserEmail: setUserEmail,
-          ),
+          HomeView(),
+          BookingsView(),
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(

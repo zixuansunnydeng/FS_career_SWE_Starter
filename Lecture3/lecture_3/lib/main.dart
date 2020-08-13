@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:lecture_3/core/model/user.dart';
 import 'package:lecture_3/ui/views/bottom_navigation_view.dart';
 import 'package:provider/provider.dart';
 
@@ -10,8 +11,8 @@ void main() {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Provider<List<String>>(
-      create: (_) => [],
+    return Provider<User>(
+      create: (_) => User(null, null, [], []),
       child: MaterialApp(
         theme: ThemeData(
             textTheme: GoogleFonts.montserratTextTheme(

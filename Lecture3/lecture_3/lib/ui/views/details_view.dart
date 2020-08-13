@@ -4,26 +4,26 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'package:lecture_3/core/model/restaurant.dart';
+import 'package:lecture_3/core/model/user.dart';
 import 'package:provider/provider.dart';
 
 class DetailsView extends StatefulWidget {
-  final String useremail;
   final Restaurant res;
 
-  DetailsView({@required this.res, @required this.useremail});
+  DetailsView({@required this.res});
 
   @override
   _DetailsViewState createState() => _DetailsViewState();
 }
 
 class _DetailsViewState extends State<DetailsView> {
-  Future<String> makeBooking() async {
+  Future<String> makeBooking(String email, String resName) async {
     var param = {
-      'email': widget.useremail,
-      'resName': widget.res.resName,
+      'email': email,
+      'resName': resName,
     };
     var headers = {'Content-type': 'application/json'};
-    var endpoint = 'http://52.205.82.172/book';
+    var endpoint = 'http://52.91.147.61/book';
     var response =
         await post(endpoint, headers: headers, body: json.encode(param));
     return json.decode(response.body);
@@ -145,11 +145,13 @@ class _DetailsViewState extends State<DetailsView> {
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: RaisedButton(
-              onPressed: Provider.of<List<String>>(context, listen: false)
+              onPressed: Provider.of<User>(context, listen: false)
+                      .reservations
                       .contains(widget.res.resName)
                   ? null
                   : () async {
-                      if (widget.useremail == null) {
+                      if (Provider.of<User>(context, listen: false).useremail ==
+                          null) {
                         showDialog(
                             context: context,
                             builder: (BuildContext context) {
@@ -160,11 +162,16 @@ class _DetailsViewState extends State<DetailsView> {
                               );
                             });
                       } else {
-                        var output = await makeBooking();
+                        var email = Provider.of<User>(context, listen: false).useremail;
+                        var output = await makeBooking(email, widget.res.resName);
                         if (output == 'Success') {
                           setState(() {
-                            Provider.of<List<String>>(context, listen: false)
+                            Provider.of<User>(context, listen: false)
+                                .reservations
                                 .add(widget.res.resName);
+                            Provider.of<User>(context, listen: false)
+                                .bookingsImages
+                                .add(widget.res.resImage);
                             showDialog(
                               context: context,
                               builder: (BuildContext context) {
@@ -179,7 +186,7 @@ class _DetailsViewState extends State<DetailsView> {
                       }
                     },
               child:
-                  Text('Boot the table', style: TextStyle(color: Colors.white)),
+                  Text('Book the table', style: TextStyle(color: Colors.white)),
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(20)),
               color: Colors.red,

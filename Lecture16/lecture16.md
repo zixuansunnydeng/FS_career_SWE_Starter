@@ -44,7 +44,7 @@ def book():
 class User {
    String useremail;
    String name;
-   List<String> reservations;
+   List<String> reservations; // list of restaurant names
 }
 ```
    2. Change backend to return all user info

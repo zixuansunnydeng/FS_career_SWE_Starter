@@ -3,9 +3,8 @@ import 'package:lecture_3/core/model/restaurant.dart';
 import 'package:lecture_3/ui/views/details_view.dart';
 
 class ResCard extends StatelessWidget {
-  final String useremail;
   final Restaurant res;
-  ResCard({@required this.res, @required this.useremail});
+  ResCard({@required this.res});
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -17,7 +16,6 @@ class ResCard extends StatelessWidget {
               MaterialPageRoute(
                   builder: (context) => DetailsView(
                         res: res,
-                        useremail: useremail,
                       )));
         },
         padding: EdgeInsets.all(0),
@@ -31,6 +29,7 @@ class ResCard extends StatelessWidget {
                 padding: const EdgeInsets.fromLTRB(4, 4, 0, 0),
                 child: Text(
                   res.resName,
+                  maxLines: 1,
                   style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                 ),
               ),

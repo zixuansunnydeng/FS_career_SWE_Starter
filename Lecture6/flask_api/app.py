@@ -1,9 +1,11 @@
 from flask import Flask
 from flask import jsonify
+from flask import request
 from flask_cors import CORS
 import requests
 
 from restaurant import Restaurant
+from user import User
 
 app = Flask(__name__)
 CORS(app)
@@ -36,9 +38,38 @@ def loadYelpToDB():
             category2=res['categories'][0]['title'],
             rating=res['rating'],
             image_url=res['image_url'],
-            priceRange=res['price']
+            priceRange=res['price'],
+            address=res['location']['address1']
         )
         resDB_data.save()
+
+@app.route("/login", methods=["POST"])
+def login():
+    email = request.json["email"]
+    password = request.json["password"]
+    try:
+        user = User.get(email)
+    except:
+        return jsonify({"status": "Incorrect email"})
+    if user.password == password:
+        # loop over user's reservations, then fetch restaurant data
+        res_images = []
+        for resName in user.reservations:
+            restaurant = Restaurant.get(resName)
+            res_images.append(restaurant.image_url)
+        return jsonify({"status": "Success", "user": vars(user)["attribute_values"], "resImages": res_images})
+    else:
+        return jsonify({"status":"Wrong Password"})
+
+@app.route("/book", methods=["POST"])
+def book():
+    email = request.json["email"]
+    resName = request.json["resName"]
+    user = User.get(email)
+    #res = Restaurant.get(resName)
+    user.reservations.append(resName)
+    user.save()
+    return jsonify("Success")
 
 def yelp_data():
     endpoint = "https://api.yelp.com/v3/businesses/search"

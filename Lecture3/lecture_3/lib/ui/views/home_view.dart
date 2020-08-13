@@ -4,10 +4,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'package:lecture_3/core/model/restaurant.dart';
+import 'package:lecture_3/core/model/user.dart';
 import 'package:lecture_3/ui/views/subviews/res_card.dart';
+import 'package:provider/provider.dart';
 
 class HomeView extends StatefulWidget {
-  final String useremail;
   static List<String> categories = ['American', 'French', 'Dessert', 'Bar'];
   static List<String> categoryImgs = [
     'Burger.png',
@@ -16,7 +17,6 @@ class HomeView extends StatefulWidget {
     'Cocktails.png'
   ];
   static List<Restaurant> resList = [];
-  HomeView({@required this.useremail});
   @override
   _HomeViewState createState() => _HomeViewState();
 }
@@ -33,7 +33,7 @@ class _HomeViewState extends State<HomeView> {
 
   Future<void> loadRestaurant() async {
     // Use your own server api, make a GET request on /getRes
-    var endpoint = 'http://52.205.82.172/getRes';
+    var endpoint = 'http://52.91.147.61/getRes';
     Response response = await get(endpoint);
     for (var jsonRes in json.decode(response.body)) {
       var res = Restaurant(
@@ -59,10 +59,17 @@ class _HomeViewState extends State<HomeView> {
             children: <Widget>[
               Row(
                 children: <Widget>[
-                  Text(
-                    'Good morning, Annie',
-                    style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-                  ),
+                  Provider.of<User>(context, listen: false).useremail == null
+                      ? Text(
+                          'Good morning!',
+                          style: TextStyle(
+                              fontSize: 24, fontWeight: FontWeight.bold),
+                        )
+                      : Text(
+                          'Good morning, ${Provider.of<User>(context, listen: false).name}!',
+                          style: TextStyle(
+                              fontSize: 24, fontWeight: FontWeight.bold),
+                        ),
                   Expanded(child: SizedBox()),
                   CircleAvatar(
                     child: Image.asset('assets/Profile.png'),
@@ -121,7 +128,7 @@ class _HomeViewState extends State<HomeView> {
                     scrollDirection: Axis.horizontal,
                     itemCount: HomeView.resList.length,
                     itemBuilder: (BuildContext context, int index) {
-                      return ResCard(res: HomeView.resList[index], useremail: widget.useremail);
+                      return ResCard(res: HomeView.resList[index]);
                     }),
               )
             ],
