@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'package:lecture_3/core/model/restaurant.dart';
 import 'package:lecture_3/core/model/user.dart';
+import 'package:lecture_3/utils/helper.dart';
 import 'package:provider/provider.dart';
 
 class DetailsView extends StatefulWidget {
@@ -23,7 +24,7 @@ class _DetailsViewState extends State<DetailsView> {
       'resName': resName,
     };
     var headers = {'Content-type': 'application/json'};
-    var endpoint = 'http://52.91.147.61/book';
+    var endpoint = '$BASE_API_URL/book';
     var response =
         await post(endpoint, headers: headers, body: json.encode(param));
     return json.decode(response.body);

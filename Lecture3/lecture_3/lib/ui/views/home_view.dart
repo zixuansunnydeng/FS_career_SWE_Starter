@@ -5,7 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'package:lecture_3/core/model/restaurant.dart';
 import 'package:lecture_3/core/model/user.dart';
+import 'package:lecture_3/ui/views/res_list_view.dart';
 import 'package:lecture_3/ui/views/subviews/res_card.dart';
+import 'package:lecture_3/utils/helper.dart';
 import 'package:provider/provider.dart';
 
 class HomeView extends StatefulWidget {
@@ -33,7 +35,7 @@ class _HomeViewState extends State<HomeView> {
 
   Future<void> loadRestaurant() async {
     // Use your own server api, make a GET request on /getRes
-    var endpoint = 'http://52.91.147.61/getRes';
+    var endpoint = '$BASE_API_URL/getRes';
     Response response = await get(endpoint);
     for (var jsonRes in json.decode(response.body)) {
       var res = Restaurant(
@@ -50,7 +52,6 @@ class _HomeViewState extends State<HomeView> {
 
   @override
   Widget build(BuildContext context) {
-    print('build');
     return Scaffold(
       body: SafeArea(
         child: Padding(
@@ -110,8 +111,10 @@ class _HomeViewState extends State<HomeView> {
                     itemCount: HomeView.categories.length,
                     itemBuilder: (BuildContext context, int index) {
                       return CategoryButton(
-                          categoryName: HomeView.categories[index],
-                          categoryImg: HomeView.categoryImgs[index]);
+                        categoryName: HomeView.categories[index],
+                        categoryImg: HomeView.categoryImgs[index],
+                        resList: HomeView.resList,
+                      );
                     }),
               ),
               Align(
@@ -142,8 +145,12 @@ class _HomeViewState extends State<HomeView> {
 class CategoryButton extends StatelessWidget {
   final String categoryName;
   final String categoryImg;
+  final List<Restaurant> resList;
 
-  CategoryButton({@required this.categoryName, @required this.categoryImg});
+  CategoryButton(
+      {@required this.categoryName,
+      @required this.categoryImg,
+      @required this.resList});
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -155,7 +162,14 @@ class CategoryButton extends StatelessWidget {
             height: 45,
             child: RaisedButton(
               child: Image.asset('assets/$categoryImg'),
-              onPressed: () {},
+              onPressed: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => ResListView(
+                              category: categoryName,
+                            )));
+              },
               color: Colors.white,
             ),
           ),

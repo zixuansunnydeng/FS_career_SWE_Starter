@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'package:lecture_3/core/model/user.dart';
+import 'package:lecture_3/utils/helper.dart';
 import 'package:provider/provider.dart';
 
 class BookingsView extends StatefulWidget {
@@ -22,7 +23,7 @@ class _BookingsViewState extends State<BookingsView> {
       'password': password,
     };
     var headers = {'Content-type': 'application/json'};
-    var endpoint = 'http://52.91.147.61/login';
+    var endpoint = '$BASE_API_URL/login';
     var response =
         await post(endpoint, headers: headers, body: json.encode(param));
     return json.decode(response.body);
@@ -117,11 +118,20 @@ class BookingsColumn extends StatefulWidget {
 }
 
 class _BookingsColumnState extends State<BookingsColumn> {
+  Future<String> cancel_bookings(String resName, String email) async {
+    var param = {
+      'email': email,
+      'resName': resName,
+    };
+    var headers = {'Content-type': 'application/json'};
+    var endpoint = '$BASE_API_URL/cancel_booking';
+    var response =
+        await post(endpoint, headers: headers, body: json.encode(param));
+    return json.decode(response.body);
+  }
+
   @override
   Widget build(BuildContext context) {
-    // list of restaurant names
-    // 1. Api loadRestaurantData(resName) => Restaurant data
-    // 2.
     var bookings = Provider.of<User>(context, listen: false).reservations;
     var bookingsImages =
         Provider.of<User>(context, listen: false).bookingsImages;
@@ -148,15 +158,17 @@ class _BookingsColumnState extends State<BookingsColumn> {
                           Text('Are you sure you want to cancel this booking?'),
                       actions: [
                         FlatButton(
-                          onPressed: () {
-                            setState(() {
-                              Provider.of<User>(context, listen: false)
-                                  .reservations
-                                  .remove(bookings[index]);
-                            });
-                            // TODO: clear bookings inside database
-                            // Create a new API in the backend
-                            // and call that API
+                          onPressed: () async {
+                            String response = await cancel_bookings(
+                                bookings[index],
+                                Provider.of<User>(context, listen: false)
+                                    .useremail);
+                            if (response == 'Success')
+                              setState(() {
+                                Provider.of<User>(context, listen: false)
+                                    .reservations
+                                    .remove(bookings[index]);
+                              });
                             Navigator.of(context).pop();
                           },
                           child: Text('Yes, cancel'),
