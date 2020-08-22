@@ -50,6 +50,7 @@ class _BookingsViewState extends State<BookingsView> {
                     SizedBox(height: 16),
                     TextField(
                       controller: passwordController,
+                      obscureText: true,
                       decoration: InputDecoration(
                         hintText: 'password',
                       ),

@@ -113,7 +113,6 @@ class _HomeViewState extends State<HomeView> {
                       return CategoryButton(
                         categoryName: HomeView.categories[index],
                         categoryImg: HomeView.categoryImgs[index],
-                        resList: HomeView.resList,
                       );
                     }),
               ),
@@ -145,12 +144,8 @@ class _HomeViewState extends State<HomeView> {
 class CategoryButton extends StatelessWidget {
   final String categoryName;
   final String categoryImg;
-  final List<Restaurant> resList;
 
-  CategoryButton(
-      {@required this.categoryName,
-      @required this.categoryImg,
-      @required this.resList});
+  CategoryButton({@required this.categoryName, @required this.categoryImg});
   @override
   Widget build(BuildContext context) {
     return Padding(

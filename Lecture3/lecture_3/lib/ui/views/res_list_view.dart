@@ -8,15 +8,13 @@ import 'package:lecture_3/utils/helper.dart';
 
 class ResListView extends StatefulWidget {
   final String category;
-
   ResListView({@required this.category});
   @override
   _ResListViewState createState() => _ResListViewState();
 }
 
 class _ResListViewState extends State<ResListView> {
-  List<Restaurant> resList = [];
-
+  @override
   void initState() {
     super.initState();
     // load restaurant.json when start up
@@ -26,13 +24,12 @@ class _ResListViewState extends State<ResListView> {
   }
 
   Future<void> loadRestaurantByCategory() async {
-    // Use your own server api, make a GET request on /getRes
     var param = {
-      'category': widget.category,
+      "category": widget.category,
     };
     var headers = {'Content-type': 'application/json'};
     var endpoint = '$BASE_API_URL/getResByCategory';
-    var response =
+    Response response =
         await post(endpoint, headers: headers, body: json.encode(param));
     for (var jsonRes in json.decode(response.body)) {
       var res = Restaurant(
@@ -47,27 +44,26 @@ class _ResListViewState extends State<ResListView> {
     }
   }
 
+  List<Restaurant> resList = [];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(backgroundColor: Colors.red),
-      body: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: ListView.builder(
-          itemCount: resList.length,
-          itemBuilder: (BuildContext context, int index) {
-            return ResListCard(res: resList[index]);
-          },
-        ),
-      ),
-    );
+        appBar: AppBar(backgroundColor: Colors.red),
+        body: Padding(
+          padding: const EdgeInsets.all(12.0),
+          child: ListView.builder(
+              itemCount: resList.length,
+              itemBuilder: (BuildContext context, int index) {
+                return ResListCard(res: resList[index]);
+              }),
+        ));
   }
 }
 
 class ResListCard extends StatelessWidget {
   final Restaurant res;
-  ResListCard({@required this.res});
 
+  ResListCard({@required this.res});
   @override
   Widget build(BuildContext context) {
     return Container(
