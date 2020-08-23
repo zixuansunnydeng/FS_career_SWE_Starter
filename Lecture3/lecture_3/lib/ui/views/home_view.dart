@@ -43,7 +43,7 @@ class _HomeViewState extends State<HomeView> {
           jsonRes['priceRange'],
           jsonRes['category1'],
           jsonRes['category2'],
-          jsonRes['rating'],
+          jsonRes['rating'].toDouble(),
           jsonRes['image_url'],
           jsonRes['address']);
       HomeView.resList.add(res);

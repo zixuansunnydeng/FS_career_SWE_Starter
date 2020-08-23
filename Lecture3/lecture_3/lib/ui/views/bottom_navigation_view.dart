@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:lecture_3/ui/views/bookings_view.dart';
 import 'package:lecture_3/ui/views/home_view.dart';
+import 'package:lecture_3/ui/views/map_view.dart';
 
 class BottomNavigationView extends StatefulWidget {
   @override
@@ -17,6 +18,7 @@ class _BottomNavigationViewState extends State<BottomNavigationView> {
         index: _selectedIndex,
         children: [
           HomeView(),
+          MapView(),
           BookingsView(),
         ],
       ),
@@ -33,6 +35,10 @@ class _BottomNavigationViewState extends State<BottomNavigationView> {
           BottomNavigationBarItem(
             icon: Icon(Icons.home, color: Colors.red),
             title: Text('Home', style: TextStyle(color: Colors.red)),
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.map, color: Colors.red),
+            title: Text('Map', style: TextStyle(color: Colors.red)),
           ),
           BottomNavigationBarItem(
               icon: Icon(Icons.calendar_today, color: Colors.red),
