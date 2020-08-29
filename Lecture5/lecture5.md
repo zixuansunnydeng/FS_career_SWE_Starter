@@ -1,8 +1,48 @@
 # Lecture 5
 
-### Runtime Complexity
+## Table of Contents
+1. JSON (part 2)
+2. Runtime Complexity
+3. Yelp API
+4. Homework
+
+---
+## **1. JSON (continued)**
+
+in home_view.dart:
+
+```dart
+
+class _HomeViewState extends State<HomeView> {
+  @override
+  void initState() {
+    super.initState();
+    // load restaurant.json when start up
+    loadRestaurant().whenComplete(() {
+      setState(() {}); // callback function
+    });
+  }
+
+  Future<void> loadRestaurant() async {
+    String output = await DefaultAssetBundle.of(context).loadString("assets/restaurant.json");
+
+    for (var jsonRes in json.decode(output)) {
+      print('load');
+      var res = Restaurant(
+          jsonRes['resName'],
+          jsonRes['priceRange'],
+          jsonRes['category1'],
+          jsonRes['category2'],
+          jsonRes['rating'],
+          jsonRes['image_url']);
+      HomeView.resList.add(res);
+    }
+```
+---
+
+## **2. Runtime Complexity**
 - Question: what's the runtime complexity for `json['resName']`
-  - Answer: amortized `O(1)`
+  - Answer: amortized `O(1)` (average case)
 - Question: What's the total runtime of the loop?
   - Answer: amortized `O(n)`
 
@@ -17,7 +57,7 @@
 
 ### Hashtable
 - `Dictionary` is a generic type (high level)
-  - It could be implemented by `hashtable`
+  - It could be implemented by `hashtable` (hashtable is lower level), or by other data structure
   - We always assume a dictionary is implemented using `hashtable`
 - Implementation
   - `array + hash function`
@@ -36,7 +76,8 @@
   - Delete: Average O(1), worst case O(n)
 - More info refer to algorithm course
 
-## Yelp API Endpoints
+---
+## **3. Yelp API Endpoints**
 - Where do we get the json from?
 - https://www.yelp.ca/developers/documentation/v3
 - You can query lots of existing restaurant info
@@ -46,7 +87,7 @@
   - set of rules allow programs to talk to each other
 - `REST`: Representational State Transfer
   - set of rules developers follow when creating API
-  - `RPC`
+  - `RPC` - another kind of api, needs to pass more info each time
   - `Advantage`: REST API is stateless, takes query parameters
 - `Root endpoint`: e.g. https://www.youtube.com/
 - `endpoint`: specific resource you are looking for
@@ -60,7 +101,7 @@
   - `PUT`: update/replace
   - `PATCH`: update/modify
   - `DELETE`: delete
-- ENdpoint structure:
+- Endpoint structure:
   - `[scheme(https)]//[endpoint]?/[query parameters]
 
 ### Use Yelp API
@@ -76,14 +117,18 @@
     - `500`: Internal Server Error
   - `http header`: pass in additional information in http request
 
+```dart
+
+     // Use yelp api, make a GET request on /business/seaerch
+    var endpoint = 'https://api.yelp.com/v3/businesses/search?&location=Toronto&limit=5';
+    var apiKey = 'p5v3EG1evJ1yWONgOndt2MKyai-VBHWGtfPYAaOIL7jxluk1k3QlvizsBcWfR_0-l1wmSaXrYGy0weEYCYMNDaDJ4yjj_vtWEIoVelGdVujsBhYjfreBgd_pajL9XnYx';
+    Response response = await get(endpoint, headers: {'Authorization': 'Bearer $apiKey'});
+    print(response.statusCode);
+
+```
+
 ### Task for you
 1. Create an account in yelp
 2. Use yelp api to load 5 restaurants info in each of `American`, `Steak`, `Chinese`, `Korean`, `Japanese`
 3. Deserialize all restaurants as `Restaurant` Objects
 4. Move api code to `Api` class, and use it
-
-
-
-
-
-
