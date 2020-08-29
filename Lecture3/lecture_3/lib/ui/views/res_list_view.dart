@@ -39,7 +39,9 @@ class _ResListViewState extends State<ResListView> {
           jsonRes['category2'],
           jsonRes['rating'].toDouble(),
           jsonRes['image_url'],
-          jsonRes['address']);
+          jsonRes['address'],
+          jsonRes['lat'],
+          jsonRes['lng']);
       resList.add(res);
     }
   }
