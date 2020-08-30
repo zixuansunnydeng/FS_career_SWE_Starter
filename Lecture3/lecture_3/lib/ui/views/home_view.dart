@@ -6,6 +6,7 @@ import 'package:http/http.dart';
 import 'package:lecture_3/core/model/restaurant.dart';
 import 'package:lecture_3/core/model/user.dart';
 import 'package:lecture_3/ui/views/res_list_view.dart';
+import 'package:lecture_3/ui/views/search_view.dart';
 import 'package:lecture_3/ui/views/subviews/res_card.dart';
 import 'package:lecture_3/utils/helper.dart';
 import 'package:provider/provider.dart';
@@ -85,7 +86,13 @@ class _HomeViewState extends State<HomeView> {
                   Expanded(
                     child: RaisedButton(
                       color: Colors.white,
-                      onPressed: () {},
+                      onPressed: () {
+                        // navigate to search view
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => SearchView()));
+                      },
                       child: Row(
                         children: <Widget>[
                           Icon(Icons.search),
