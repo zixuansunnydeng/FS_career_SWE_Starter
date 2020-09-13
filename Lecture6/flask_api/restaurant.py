@@ -14,4 +14,6 @@ class Restaurant(Model): # inheritance
     image_url = UnicodeAttribute()
     priceRange = UnicodeAttribute()
     address = UnicodeAttribute()
+    lat = NumberAttribute()
+    lng = NumberAttribute()
 

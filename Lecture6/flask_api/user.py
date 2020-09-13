@@ -9,7 +9,6 @@ class User(Model): # inheritance
         region = 'us-east-1'
     
     email = UnicodeAttribute(hash_key=True)
-    name = UnicodeAttribute()
     password = UnicodeAttribute()
     phoneNumber = UnicodeAttribute()
 
