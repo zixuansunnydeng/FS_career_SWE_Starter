@@ -13,7 +13,8 @@
   - Implementation: `array + hash function`
   - Lookup: Amortized `O(1)`
 - **Set**
-  - Addition: `O(log n)`
+  - depends on the implementation
+  - Addition: tree-based `O(log n)`, hashtable based `O(1)`
   - Lookup: Amortized `O(1)`
 - Time complexity cheat sheet
   - https://www.bigocheatsheet.com/
@@ -140,7 +141,7 @@ def xxx():
 - `Tables`: defined by Schema, tables define column keys
   - `Column`: value with the same type
   - `Row`: structured data in a table
-  - `Primary key`: uniquely identifies a column
+  - `Primary key`: uniquely identifies a row
 - `MySQL` is the most common relational database, so often refer to as `SQL database`
 
 ### DynamoDB
@@ -151,7 +152,7 @@ def xxx():
   2. SQL schema must be defined first and fixed, NoSQL schema can be modified
   3. SQL provides `ACID` properly to allow `transactions`, while only a few nosql database can achieve this
   4. SQL database uses SQL query language, NoSQL has no such a thing
-  5. SQL has built-in indexing, NoSQL needs to declare (more on this later)
+  5. SQL has built-in indexing, NoSQL needs to declare
 - Need aws credentials in order to run
   - managed by `IAM`, and pass the credentials to `~/.aws/credentials`
 
@@ -187,7 +188,7 @@ def xxx():
 - Version control
 - Usual flow to commit changes
   1. `git status` to check your current status of the files
-  2. `git checkou -b <BRANCH>`: create a new branch
+  2. `git checkout -b <BRANCH>`: create a new branch
   3. `git add`: add any modified/untracked file
      1. Often use `git add -A` to add all modified/untracked files at once.
   4. `git commit -m 'MESSAGE`: to commit your changes with a message
